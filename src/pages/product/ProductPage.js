@@ -14,7 +14,13 @@ function ProductPage() {
 
   useEffect(() => {
     fetch('/list/products')
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || `HTTP ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => setProducts(data))
       .catch(err => console.error("Failed to load products", err));
   }, []);
@@ -37,7 +43,13 @@ function ProductPage() {
   })
 })
       .then(() => fetch('/list/products'))
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || `HTTP ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => {
         setProducts(data);
         setForm({ name: '', category: '', stock: '', price: '' });

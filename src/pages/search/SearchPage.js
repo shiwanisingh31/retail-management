@@ -10,6 +10,9 @@ const SearchProducts = () => {
     setLoading(true);
     try {
       const response = await fetch('/list/products');
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
       const data = await response.json();
       setResults(data);
     } catch (err) {
@@ -29,6 +32,9 @@ const SearchProducts = () => {
         : `/list/products`;
 
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
       const data = await response.json();
       setResults(data);
     } catch (err) {

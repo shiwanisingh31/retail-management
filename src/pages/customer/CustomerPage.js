@@ -16,7 +16,13 @@ function CustomerPage() {
   // Load customer list on component mount
   useEffect(() => {
     fetch('/list/customer')
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || `HTTP ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => setCustomers(data))
       .catch(err => console.error("Failed to load customers", err));
   }, []);
@@ -37,7 +43,13 @@ function CustomerPage() {
       body: formBody
     })
       .then(() => fetch('/list/customer'))
-      .then(res => res.json())
+      .then(async res => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || `HTTP ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => {
         setCustomers(data);
         setForm({ name: '', phoneno: '', email: '', gender: '', age: '' });
@@ -47,6 +59,12 @@ function CustomerPage() {
 
   const handleDelete = (id) => {
     fetch(`/delete/customer?id=${id}`)
+      .then(async res => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || `HTTP ${res.status}`);
+        }
+      })
       .then(() => setCustomers(customers.filter(c => c.id !== id)))
       .catch(err => console.error("Failed to delete customer", err));
   };

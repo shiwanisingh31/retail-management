@@ -17,7 +17,6 @@ import com.retail_management.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class UserRestController {
 
     @Autowired
@@ -64,5 +63,11 @@ public class UserRestController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not logged in");
         }
+    }
+
+    // Optional: duplicate mapping under /auth to match some client calls
+    @GetMapping("/auth/check-session")
+    public ResponseEntity<String> checkSessionAuth(HttpSession session) {
+        return checkSession(session);
     }
 }

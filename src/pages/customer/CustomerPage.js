@@ -15,7 +15,7 @@ function CustomerPage() {
 
   // Load customer list on component mount
   useEffect(() => {
-    fetch('/list/customer')
+    fetch('/list/customer', { credentials: 'include' })
       .then(res => res.json())
       .then(data => setCustomers(data))
       .catch(err => console.error("Failed to load customers", err));
@@ -31,12 +31,13 @@ function CustomerPage() {
 
     fetch('/save/customer', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
       body: formBody
     })
-      .then(() => fetch('/list/customer'))
+      .then(() => fetch('/list/customer', { credentials: 'include' }))
       .then(res => res.json())
       .then(data => {
         setCustomers(data);
@@ -46,7 +47,7 @@ function CustomerPage() {
   };
 
   const handleDelete = (id) => {
-    fetch(`/delete/customer?id=${id}`)
+    fetch(`/delete/customer?id=${id}`, { credentials: 'include' })
       .then(() => setCustomers(customers.filter(c => c.id !== id)))
       .catch(err => console.error("Failed to delete customer", err));
   };

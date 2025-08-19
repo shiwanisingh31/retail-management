@@ -13,7 +13,7 @@ function ProductPage() {
   });
 
   useEffect(() => {
-    fetch('/list/products')
+    fetch('/list/products', { credentials: 'include' })
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -30,6 +30,7 @@ function ProductPage() {
     e.preventDefault();
     fetch('/save/products', {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -39,7 +40,7 @@ function ProductPage() {
     price: Number(form.price)
   })
 })
-      .then(() => fetch('/list/products'))
+      .then(() => fetch('/list/products', { credentials: 'include' }))
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -52,7 +53,7 @@ function ProductPage() {
   };
 
   const handleDelete = (id) => {
-    fetch(`/delete/products?id=${id}`)
+    fetch(`/delete/products?id=${id}`, { credentials: 'include' })
       .then(() => setProducts(products.filter(product => product.id !== id)))
       .catch(err => console.error("Failed to delete product", err));
   };

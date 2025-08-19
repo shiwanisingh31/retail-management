@@ -9,7 +9,7 @@ const SearchProducts = () => {
   const fetchAllProducts = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/list/products');
+      const response = await fetch('/list/products', { credentials: 'include' });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setResults(data);
@@ -29,7 +29,7 @@ const SearchProducts = () => {
         ? `/search/products?productName=${encodeURIComponent(searchTerm)}`
         : `/list/products`;
 
-      const response = await fetch(url);
+      const response = await fetch(url, { credentials: 'include' });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setResults(data);

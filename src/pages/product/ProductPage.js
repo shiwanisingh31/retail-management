@@ -13,7 +13,7 @@ function ProductPage() {
   });
 
   useEffect(() => {
-    fetch('http://localhost:8081/list/products')
+    fetch('/list/products')
       .then(res => res.json())
       .then(data => setProducts(data))
       .catch(err => console.error("Failed to load products", err));
@@ -25,7 +25,7 @@ function ProductPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:8081/save/products', {
+    fetch('/save/products', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ function ProductPage() {
     price: Number(form.price)
   })
 })
-      .then(() => fetch('http://localhost:8081/list/products'))
+      .then(() => fetch('/list/products'))
       .then(res => res.json())
       .then(data => {
         setProducts(data);
@@ -46,7 +46,7 @@ function ProductPage() {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:8081/delete/products?id=${id}`)
+    fetch(`/delete/products?id=${id}`)
       .then(() => setProducts(products.filter(product => product.id !== id)))
       .catch(err => console.error("Failed to delete product", err));
   };

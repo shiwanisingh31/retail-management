@@ -39,7 +39,7 @@ public class UserRestController {
         return userServ.delUser(id);
     }
 
-    @PostMapping("/login")
+    @PostMapping({"/login", "/auth/login"})
     public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
         if (userServ.authenticate(user.getPhoneno(), user.getPassword())) {
             session.setAttribute("user", user.getPhoneno());
@@ -49,13 +49,13 @@ public class UserRestController {
         }
     }
 
-    @PostMapping("/logout")
+    @PostMapping({"/logout", "/auth/logout"})
     public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate();
         return ResponseEntity.ok("Logged out");
     }
 
-    @GetMapping("/check-session")
+    @GetMapping({"/check-session", "/auth/check-session"})
     public ResponseEntity<String> checkSession(HttpSession session) {
         Object userObj = session.getAttribute("user");
 

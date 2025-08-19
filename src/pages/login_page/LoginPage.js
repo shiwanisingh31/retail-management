@@ -14,7 +14,7 @@ function LoginPage({ setIsLoggedIn }) {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch('http://localhost:8081/check-session', {
+        const response = await fetch('/check-session', {
           credentials: 'include',
         });
         if (response.ok) {
@@ -45,8 +45,8 @@ function LoginPage({ setIsLoggedIn }) {
   e.preventDefault();
 
   const url = isSignup
-    ? 'http://localhost:8081/save/user'
-    : 'http://localhost:8081/login';
+    ? '/save/user'
+    : '/login';
 
   try {
     const requestBody = isSignup 

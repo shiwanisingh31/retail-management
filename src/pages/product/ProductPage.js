@@ -13,8 +13,11 @@ function ProductPage() {
   });
 
   useEffect(() => {
-    fetch('http://localhost:8081/list/products')
-      .then(res => res.json())
+    fetch('/list/products', { credentials: 'include' })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then(data => setProducts(data))
       .catch(err => console.error("Failed to load products", err));
   }, []);
@@ -25,8 +28,9 @@ function ProductPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:8081/save/products', {
+    fetch('/save/products', {
   method: 'POST',
+  credentials: 'include',
   headers: {
     'Content-Type': 'application/json'
   },
@@ -36,8 +40,11 @@ function ProductPage() {
     price: Number(form.price)
   })
 })
-      .then(() => fetch('http://localhost:8081/list/products'))
-      .then(res => res.json())
+      .then(() => fetch('/list/products', { credentials: 'include' }))
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then(data => {
         setProducts(data);
         setForm({ name: '', category: '', stock: '', price: '' });
@@ -46,7 +53,7 @@ function ProductPage() {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:8081/delete/products?id=${id}`)
+    fetch(`/delete/products?id=${id}`, { credentials: 'include' })
       .then(() => setProducts(products.filter(product => product.id !== id)))
       .catch(err => console.error("Failed to delete product", err));
   };

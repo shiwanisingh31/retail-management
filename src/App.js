@@ -13,7 +13,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null); // null = loading
 
   useEffect(() => {
-    fetch('http://localhost:8081/check-session', {
+    fetch('/check-session', {
       method: 'GET',
       credentials: 'include',
     })
@@ -23,7 +23,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch('http://localhost:8081/logout', {
+      const res = await fetch('/logout', {
         method: 'POST',
         credentials: 'include',
       });

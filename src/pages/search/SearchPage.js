@@ -9,7 +9,8 @@ const SearchProducts = () => {
   const fetchAllProducts = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8081/list/products');
+      const response = await fetch('/list/products', { credentials: 'include' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setResults(data);
     } catch (err) {
@@ -25,10 +26,11 @@ const SearchProducts = () => {
 
     try {
       const url = searchTerm.trim()
-        ? `http://localhost:8081/search/products?productName=${encodeURIComponent(searchTerm)}`
-        : `http://localhost:8081/list/products`;
+        ? `/search/products?productName=${encodeURIComponent(searchTerm)}`
+        : `/list/products`;
 
-      const response = await fetch(url);
+      const response = await fetch(url, { credentials: 'include' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       setResults(data);
     } catch (err) {

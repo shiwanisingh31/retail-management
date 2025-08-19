@@ -17,7 +17,7 @@ public class UserService {
 
 	public String saveUserToDB(
 			String name,
-			int phoneno,
+			long phoneno,
 			String password
 			) 
 	{
@@ -43,7 +43,7 @@ public class UserService {
 		
 	}
 
-	public boolean authenticate(int phone, String password) {
+	public boolean authenticate(long phone, String password) {
 	    return userDao.authentication(phone, password);
 	}
 	

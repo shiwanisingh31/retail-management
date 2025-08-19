@@ -7,13 +7,14 @@ import ProductPage from './pages/product/ProductPage';
 import CustomerPage from './pages/customer/CustomerPage';
 import SalesPage from './pages/sales/SalesPage';
 import SearchProducts from './pages/search/SearchPage';
+import StockPage from './pages/stock/StockPage';
 import NavbarPage from './pages/navbar/NavbarPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null); // null = loading
 
   useEffect(() => {
-    fetch('http://localhost:8081/check-session', {
+    fetch('/check-session', {
       method: 'GET',
       credentials: 'include',
     })
@@ -23,7 +24,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch('http://localhost:8081/logout', {
+      const res = await fetch('/logout', {
         method: 'POST',
         credentials: 'include',
       });
@@ -71,6 +72,12 @@ function App() {
           path="/search"
           element={
             isLoggedIn ? <SearchProducts /> : <Navigate to="/login" replace />
+          }
+        />
+        <Route
+          path="/stock"
+          element={
+            isLoggedIn ? <StockPage /> : <Navigate to="/login" replace />
           }
         />
         <Route

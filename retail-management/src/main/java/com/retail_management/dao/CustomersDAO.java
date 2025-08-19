@@ -7,6 +7,6 @@ import com.retail_management.entity.Customer;
 
 
 @Repository
-public interface CustomersDAO extends JpaRepository<Customer, Integer>{
+public interface CustomersDAO extends JpaRepository<Customer, Long>{
 
 }

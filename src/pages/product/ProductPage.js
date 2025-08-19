@@ -1,5 +1,3 @@
-// src/pages/product/Product.js
-
 import React, { useState, useEffect } from 'react';
 import './ProductPage.css';
 
@@ -13,30 +11,33 @@ function ProductPage() {
   });
 
   useEffect(() => {
-    fetch('http://localhost:8081/list/products')
-      .then(res => res.json())
+    fetch('/list/products', {
+      credentials: 'include'
+    })
+      .then(res => {
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+  return res.status === 204 ? [] : res.json();
+})
+
       .then(data => setProducts(data))
       .catch(err => console.error("Failed to load products", err));
   }, []);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:8081/save/products', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    ...form,
-    stock: Number(form.stock),
-    price: Number(form.price)
-  })
-})
-      .then(() => fetch('http://localhost:8081/list/products'))
+    fetch('/save/products', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...form,
+        stock: Number(form.stock),
+        price: Number(form.price)
+      })
+    })
+      .then(() => fetch('/list/products', { credentials: 'include' }))
       .then(res => res.json())
       .then(data => {
         setProducts(data);
@@ -46,20 +47,53 @@ function ProductPage() {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:8081/delete/products?id=${id}`)
-      .then(() => setProducts(products.filter(product => product.id !== id)))
+    fetch(`/delete/products?id=${id}`, {
+      credentials: 'include'
+    })
+      .then(() => setProducts(products.filter(p => p.id !== id)))
       .catch(err => console.error("Failed to delete product", err));
+  };
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   return (
     <div className="product-page">
       <h1>Product Management</h1>
-
       <form onSubmit={handleSubmit} className="product-form">
-        <input type="text" name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
-        <input type="text" name="category" placeholder="Category" value={form.category} onChange={handleChange} required />
-        <input type="number" name="stock" placeholder="Stock" value={form.stock} onChange={handleChange} required />
-        <input type="number" name="price" placeholder="Price" value={form.price} onChange={handleChange} required />
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={form.name}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="category"
+          placeholder="Category"
+          value={form.category}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="number"
+          name="stock"
+          placeholder="Stock"
+          value={form.stock}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="number"
+          name="price"
+          placeholder="Price"
+          value={form.price}
+          onChange={handleChange}
+          required
+        />
         <button type="submit">Save Product</button>
       </form>
 
@@ -83,7 +117,9 @@ function ProductPage() {
               <td>{prod.stock}</td>
               <td>{prod.price}</td>
               <td>
-                <button className="delete-btn" onClick={() => handleDelete(prod.id)}>Delete</button>
+                <button className="delete-btn" onClick={() => handleDelete(prod.id)}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

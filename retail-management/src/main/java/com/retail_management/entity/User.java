@@ -16,7 +16,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String name;
-	private int phoneno;
+	private long phoneno;
 	private String password;
 	
 	
@@ -32,10 +32,10 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getPhoneno() {
+	public long getPhoneno() {
 		return phoneno;
 	}
-	public void setPhoneno(int phoneno) {
+	public void setPhoneno(long phoneno) {
 		this.phoneno = phoneno;
 	}
 	public String getPassword() {

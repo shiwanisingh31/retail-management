@@ -43,10 +43,24 @@ public class CustomerService {
 
 	}
 	
-	public String delCustomer(int id) {
+	public String delCustomer(Long id) {
 		
 			customerDao.deleteById(id);
 			return "success";
+	}
+	
+	// Get customer by ID
+	public Customer getCustomerById(Long customerId) {
+		try {
+			if (customerId == null || customerId <= 0) {
+				return null;
+			}
+			
+			return customerDao.findById(customerId).orElse(null);
+		} catch (Exception e) {
+			System.err.println("Error getting customer by ID: " + e.getMessage());
+			return null;
+		}
 	}
 
 }

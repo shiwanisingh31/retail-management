@@ -56,7 +56,7 @@ public class StockTracking {
     }
     
     // Helper methods to get product information
-    public Integer getProductId() {
+    public Long getProductId() {
         return product != null ? product.getId() : null;
     }
     

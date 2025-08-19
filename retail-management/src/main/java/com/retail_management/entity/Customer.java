@@ -12,8 +12,8 @@ import jakarta.persistence.Table;
 public class Customer {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String name;
 	private int phoneno;
 	private String email;
@@ -21,11 +21,11 @@ public class Customer {
 	private String gender;
 	
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {

@@ -11,5 +11,5 @@ import com.retail_management.entity.User;
 public interface UserDAO extends JpaRepository<User, Integer>{
 
 	@Query("SELECT COUNT(u) > 0 FROM User u WHERE u.phoneno = :phone AND u.password = :password")
-	boolean authentication(@Param("phone") int phone, @Param("password") String password);
+	boolean authentication(@Param("phone") long phone, @Param("password") String password);
 }

@@ -12,17 +12,17 @@ import jakarta.persistence.Table;
 public class Product {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	private String name;
 	private int price;
 	private String category;
 	private int stock;
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {

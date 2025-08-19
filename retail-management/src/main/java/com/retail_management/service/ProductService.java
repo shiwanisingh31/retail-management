@@ -54,7 +54,7 @@ public class ProductService {
         }
     }
     
-    public String delProducts(int id) {
+    public String delProducts(Long id) {
         try {
             if (id <= 0) {
                 return "error: Invalid product ID";
@@ -95,4 +95,18 @@ public class ProductService {
             return new ArrayList<>();
         }
     }
+    
+    // Get product by ID
+    public Product getProductById(Long productId) {
+        try {
+            if (productId == null || productId <= 0) {
+            return null;
+        }
+        
+        return productDao.findById(productId).orElse(null);
+    } catch (Exception e) {
+        System.err.println("Error getting product by ID: " + e.getMessage());
+        return null;
+    }
+}
 }

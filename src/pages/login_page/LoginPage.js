@@ -1,4 +1,3 @@
-// src/pages/login_page/LoginPage.js
 import React, { useState, useEffect } from 'react';
 import './Login.css';
 
@@ -10,21 +9,22 @@ function LoginPage({ setIsLoggedIn }) {
     password: '',
   });
 
-  // Check if user is already logged in
+  // Check session on mount
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await fetch('http://localhost:8081/check-session', {
+        const response = await fetch('/check-session', {
           credentials: 'include',
         });
+
         if (response.ok) {
           setIsLoggedIn(true);
-          window.location.href = '/products';
         }
-      } catch (error) {
+      } catch {
         console.log('No active session');
       }
     };
+
     checkSession();
   }, [setIsLoggedIn]);
 
@@ -35,50 +35,42 @@ function LoginPage({ setIsLoggedIn }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const url = isSignup
-    ? 'http://localhost:8081/save/user'
-    : 'http://localhost:8081/login';
+    const url = isSignup
+      ? '/save/user'
+      : '/login';
 
-  try {
-    const requestBody = isSignup 
-      ? formData  // Send all data for signup
-      : { phoneno: formData.phoneno, password: formData.password }; // Send only login data
+    const body = isSignup
+      ? { ...formData, phoneno: Number(formData.phoneno) }
+      : { phoneno: Number(formData.phoneno), password: formData.password };
 
-    const response = await fetch(url, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    });
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
 
-    if (response.ok) {
-      alert(`${isSignup ? 'Signup' : 'Login'} successful!`);
-      setFormData({ name: '', phoneno: '', password: '' });
-
-      if (!isSignup) {
-        setIsLoggedIn(true);
-        window.location.href = '/products';
+      if (response.ok) {
+        alert(`${isSignup ? 'Signup' : 'Login'} successful!`);
+        setFormData({ name: '', phoneno: '', password: '' });
+        if (!isSignup) setIsLoggedIn(true);
+      } else {
+        const errorText = await response.text();
+        alert(`${isSignup ? 'Signup' : 'Login'} failed: ${errorText}`);
       }
-    } else {
-      const errorData = await response.text();
-      alert(`${isSignup ? 'Signup' : 'Login'} failed: ${errorData}`);
+    } catch (err) {
+      console.error('Error:', err);
+      alert('Something went wrong. Try again.');
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Something went wrong. Try again.');
-  }
-};
+  };
+
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
@@ -113,10 +105,14 @@ function LoginPage({ setIsLoggedIn }) {
           required
         />
 
-        <button type="submit">{isSignup ? 'Sign Up' : 'Login'}</button>
+        <button type="submit">
+          {isSignup ? 'Sign Up' : 'Login'}
+        </button>
 
         <p className="toggle-link">
-          {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
+          {isSignup
+            ? 'Already have an account?'
+            : "Don't have an account?"}{' '}
           <span onClick={toggleForm}>
             {isSignup ? 'Login here' : 'Sign up here'}
           </span>

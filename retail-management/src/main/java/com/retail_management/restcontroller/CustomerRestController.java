@@ -36,7 +36,7 @@ public class CustomerRestController {
     }
     
     @GetMapping("/delete/customer")
-    public String delCustomer(@RequestParam("id") int id) {
+    public String delCustomer(@RequestParam("id") Long id) {
         return customerServ.delCustomer(id);
     }
 }

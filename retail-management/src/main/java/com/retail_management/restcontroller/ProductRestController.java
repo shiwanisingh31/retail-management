@@ -40,7 +40,7 @@ public class ProductRestController {
 	}
 	
 	@GetMapping ("/delete/products")
-	public String delProduct(@RequestParam("id")int id) {
+	public String delProduct(@RequestParam("id") Long id) {
 		return productServ.delProducts(id);
 		
 		
